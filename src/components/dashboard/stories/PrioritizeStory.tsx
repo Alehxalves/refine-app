@@ -33,6 +33,7 @@ interface PrioritizeStoryDialogProps {
   storyId: string;
   isOpen: boolean;
   onClose: () => void;
+  shouldRefetch?: (value: boolean) => void;
 }
 
 const MAX_REASON_LENGTH = 255;
@@ -41,6 +42,7 @@ export function PrioritizeStory({
   storyId,
   isOpen,
   onClose,
+  shouldRefetch,
 }: PrioritizeStoryDialogProps) {
   const { user } = useUser();
   const { priority, updatePriority, error } = usePriorizationTechnique(storyId);
@@ -109,6 +111,7 @@ export function PrioritizeStory({
       open={isOpen}
       onOpenChange={(details) => {
         if (!details.open) {
+          shouldRefetch?.(true);
           onClose();
         }
       }}
