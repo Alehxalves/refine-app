@@ -138,7 +138,7 @@ export function NavBar({ boardTitle, boardColor, onEditBoard }: NavBarProps) {
                     w="8px"
                     h="8px"
                     borderRadius="full"
-                    bg={boardColor || "purple.500"}
+                    bg={boardColor}
                     flexShrink={0}
                   />
                   {boardTitle ? (
