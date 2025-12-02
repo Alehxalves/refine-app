@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { storyService } from "@/lib/supabase/services/story.service";
 import { useSupabase } from "@/lib/supabase/SupabaseProvider";
 import { useUser } from "@clerk/nextjs";
-import { Story } from "@/lib/supabase/models";
+import { Story, StoryWithPrioritization } from "@/lib/supabase/models";
 
 export function useStories(boardId: string) {
   const { user } = useUser();
@@ -14,9 +14,9 @@ export function useStories(boardId: string) {
     isLoading,
     isFetching,
     error,
-  } = useQuery({
+  } = useQuery<StoryWithPrioritization[]>({
     queryKey: ["stories", boardId],
-    enabled: !!user && !!boardId,
+    enabled: !!user && !!boardId && !!supabase,
     queryFn: async () => storyService.getStoriesByBoardId(supabase!, boardId),
   });
 
@@ -35,7 +35,6 @@ export function useStories(boardId: string) {
     },
   });
 
-  // 🔹 mover história entre grupos / tirar de grupo
   const moveStoryToGroupMutation = useMutation({
     mutationFn: async (params: {
       storyId: string;
@@ -53,6 +52,24 @@ export function useStories(boardId: string) {
     return moveStoryToGroupMutation.mutateAsync({ storyId, story_group_id });
   }
 
+  const reorderStoryMutation = useMutation({
+    mutationFn: async (params: { storyId: string; targetStoryId: string }) => {
+      if (!supabase) throw new Error("Supabase client not available");
+      await storyService.swapStoriesOrder(
+        supabase,
+        params.storyId,
+        params.targetStoryId
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["stories", boardId] });
+    },
+  });
+
+  function reorderStory(storyId: string, targetStoryId: string) {
+    return reorderStoryMutation.mutateAsync({ storyId, targetStoryId });
+  }
+
   return {
     stories,
     isLoading,
@@ -60,6 +77,7 @@ export function useStories(boardId: string) {
     error,
     createStory: createStoryMutation.mutateAsync,
     moveStoryToGroup,
+    reorderStory,
     refetch: () =>
       queryClient.invalidateQueries({ queryKey: ["stories", boardId] }),
   };
@@ -75,9 +93,9 @@ export function useStory(storyId: string) {
     isLoading,
     isFetching,
     error,
-  } = useQuery({
+  } = useQuery<StoryWithPrioritization | undefined>({
     queryKey: ["story", storyId],
-    enabled: !!user && !!storyId,
+    enabled: !!user && !!storyId && !!supabase,
     queryFn: async () => storyService.getStoryById(supabase!, storyId),
   });
 
@@ -86,12 +104,30 @@ export function useStory(storyId: string) {
       storyService.updateStory(supabase!, storyId, updates),
 
     onSuccess: (updated) => {
-      queryClient.setQueryData(["story", storyId], updated);
+      queryClient.setQueryData<StoryWithPrioritization | undefined>(
+        ["story", storyId],
+        (old) =>
+          old
+            ? ({
+                ...old,
+                ...updated,
+              } as StoryWithPrioritization)
+            : ({
+                ...updated,
+              } as StoryWithPrioritization)
+      );
 
-      queryClient.setQueryData<Story[]>(
+      queryClient.setQueryData<StoryWithPrioritization[] | undefined>(
         ["stories", updated.board_id],
         (old) =>
-          old?.map((s) => (s.id === updated.id ? (updated as Story) : s)) ?? old
+          old?.map((s) =>
+            s.id === updated.id
+              ? ({
+                  ...s,
+                  ...updated,
+                } as StoryWithPrioritization)
+              : s
+          ) ?? old
       );
     },
   });
