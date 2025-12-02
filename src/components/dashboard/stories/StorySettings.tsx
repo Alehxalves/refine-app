@@ -1,6 +1,6 @@
 import ConfirmAction from "@/components/utils/ConfirmAction";
 import { useStory } from "@/hooks/useStories";
-import { Menu, Portal, useDisclosure } from "@chakra-ui/react";
+import { Button, Menu, Portal, useDisclosure } from "@chakra-ui/react";
 import { Archive, Ellipsis, Trash } from "lucide-react";
 import React from "react";
 
@@ -25,12 +25,21 @@ export default function StorySettings({
     <>
       <Menu.Root>
         <Menu.Trigger asChild>
-          <Ellipsis cursor="pointer" size="18" />
+          <Button
+            variant="ghost"
+            p="2"
+            borderRadius="full"
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            <Ellipsis cursor="pointer" size="18" />
+          </Button>
         </Menu.Trigger>
         <Portal>
           <Menu.Positioner>
             <Menu.Content>
-              <Menu.Item
+              {/* <Menu.Item
                 value="archive-story"
                 onClick={async (e) => {
                   e.stopPropagation();
@@ -46,8 +55,9 @@ export default function StorySettings({
               >
                 <Archive size="14" color="#18181B" />
                 Arquivar
-              </Menu.Item>
+              </Menu.Item> */}
               <Menu.Item
+                cursor="pointer"
                 value="delete-story"
                 onClick={async (e) => {
                   e.stopPropagation();
