@@ -23,7 +23,7 @@ import {
   useMediaQuery,
   VStack,
 } from "@chakra-ui/react";
-import { Check, Flag, Gavel, Goal, Plus, RefreshCcw } from "lucide-react";
+import { Check, Gavel, Goal, Plus, RefreshCcw } from "lucide-react";
 import { useParams } from "next/navigation";
 import React, { DragEvent, useMemo, useState } from "react";
 import { motion } from "framer-motion";
@@ -46,15 +46,6 @@ interface StoryProps {
   shouldRefetch?: (value: boolean) => void;
   onDropStory?: (e: DragEvent<HTMLDivElement>, storyId: string) => void;
 }
-
-const priorityVariants = {
-  initial: { y: 0, scale: 1 },
-  lift: {
-    y: [-2, -6, -2, 0],
-    scale: [1, 1.1, 1],
-    transition: { duration: 0.35, ease: "easeInOut" },
-  },
-};
 
 function StoryList({
   story,
