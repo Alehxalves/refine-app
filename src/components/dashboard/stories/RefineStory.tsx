@@ -126,7 +126,7 @@ export default function RefineStory({
 
   return (
     <Dialog.Root
-      size={{ base: "sm", md: "lg", lg: "lg" }}
+      size={{ base: "sm", md: "lg", lg: "xl" }}
       open={isOpen === true}
       onOpenChange={(details) => {
         if (!details.open) {

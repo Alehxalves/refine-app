@@ -85,7 +85,7 @@ export default function UpdateBoard({
   return (
     <Dialog.Root
       key="board-update"
-      size={{ base: "sm", md: "lg", lg: "lg" }}
+      size={{ base: "sm", md: "lg", lg: "xl" }}
       open={isOpen}
       onOpenChange={onClose}
     >

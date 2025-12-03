@@ -91,7 +91,7 @@ export default function CreateStoryGroup({
   return (
     <Dialog.Root
       key="story-group-create"
-      size={{ base: "sm", md: "lg", lg: "lg" }}
+      size={{ base: "sm", md: "lg", lg: "xl" }}
       open={isOpen === true}
       onOpenChange={() => {
         clearErrors();

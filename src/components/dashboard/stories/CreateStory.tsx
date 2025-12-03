@@ -77,7 +77,7 @@ export default function CreateStory({
   return (
     <Dialog.Root
       key="create-story-dialog"
-      size={{ base: "sm", md: "lg", lg: "lg" }}
+      size={{ base: "sm", md: "lg", lg: "xl" }}
       open={isOpen === true}
       onOpenChange={() => {
         clearErrors();

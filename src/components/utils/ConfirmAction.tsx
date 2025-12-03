@@ -64,7 +64,7 @@ export default function ConfirmAction({
   return (
     <Dialog.Root
       key="confirm-action-dialog"
-      size={{ base: "sm", md: "lg", lg: "lg" }}
+      size={{ base: "sm", md: "lg", lg: "xl" }}
       open={isOpen}
       onOpenChange={(details) => !details.open && onClose()}
     >
