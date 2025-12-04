@@ -5,6 +5,7 @@ import {
   CloseButton,
   Dialog,
   Field,
+  HStack,
   Input,
   NumberInput,
   Portal,
@@ -18,6 +19,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useParams } from "next/navigation";
 import { useStories } from "@/hooks/useStories";
 import { goodStoryTip } from "./tips/story-tips";
+import { EmojiPickerDialog } from "@/components/utils/EmojiPickerDialog";
 
 const StorySchema = z.object({
   title: z.string().min(1, "O título é obrigatório"),
@@ -111,12 +113,24 @@ export default function CreateStory({
                       control={control}
                       name="title"
                       render={({ field }) => (
-                        <Input
-                          borderColor={{ base: "gray.200", _dark: "gray.500" }}
-                          placeholder="Insira o título da história de usuário aqui... (ex: US.1)"
-                          value={field.value}
-                          onChange={(e) => field.onChange(e.target.value)}
-                        />
+                        <HStack align="center" gap="2">
+                          <Input
+                            w={{ base: "300px", md: "600px" }}
+                            borderColor={{
+                              base: "gray.200",
+                              _dark: "gray.500",
+                            }}
+                            placeholder="Insira o título da história de usuário aqui... (ex: US.1)"
+                            value={field.value}
+                            onChange={(e) => field.onChange(e.target.value)}
+                          />
+                          <EmojiPickerDialog
+                            key="create-story-emoji-picker"
+                            onSelectEmoji={(emoji) => {
+                              field.onChange((field.value || "") + emoji);
+                            }}
+                          />
+                        </HStack>
                       )}
                     />
                     <Field.ErrorText>{errors.title?.message}</Field.ErrorText>

@@ -383,6 +383,7 @@ export function PrioritizeStory({
                     >
                       <HStack gap="2" align="center">
                         <EmojiPickerDialog
+                          key="prioritize-story-justification-emoji-picker"
                           onSelectEmoji={(emoji) => {
                             setNewReason((prev) =>
                               (prev + emoji).slice(0, MAX_REASON_LENGTH)

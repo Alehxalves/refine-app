@@ -1,14 +1,17 @@
 "use client";
 
+import { EmojiPickerDialog } from "@/components/utils/EmojiPickerDialog";
 import { useBoard } from "@/hooks/useBoards";
 import {
   Box,
   Button,
   CloseButton,
   Dialog,
+  HStack,
   Input,
   Portal,
   Text,
+  Textarea,
   useToken,
   VStack,
 } from "@chakra-ui/react";
@@ -108,21 +111,29 @@ export default function UpdateBoard({
                 <VStack align="left" gap="4">
                   <Box spaceY="2">
                     <Text>Nome do Quadro</Text>
-                    <Input
-                      name="board_title"
-                      w="300px"
-                      placeholder="Novo quadro..."
-                      borderRadius="lg"
-                      value={newTitle}
-                      onChange={(e) => setNewTitle(e.target.value)}
-                      required
-                    />
+                    <HStack align="center" gap="2">
+                      <Input
+                        w={{ base: "300px", md: "600px" }}
+                        name="board_title"
+                        placeholder="Novo quadro..."
+                        borderRadius="lg"
+                        value={newTitle}
+                        onChange={(e) => setNewTitle(e.target.value)}
+                        required
+                      />
+                      <EmojiPickerDialog
+                        key="board-update-emoji-picker"
+                        onSelectEmoji={(emoji) => {
+                          setNewTitle((prev) => prev + emoji);
+                        }}
+                      />
+                    </HStack>
                   </Box>
+
                   <Box spaceY="2">
                     <Text>Descrição do Quadro</Text>
-                    <Input
+                    <Textarea
                       name="board_description"
-                      w="300px"
                       placeholder="Descrição do quadro..."
                       borderRadius="lg"
                       value={newDescription}

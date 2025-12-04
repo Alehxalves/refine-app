@@ -168,15 +168,24 @@ export default function RefineStory({
                     control={control}
                     name="title"
                     render={({ field }) => (
-                      <Input
-                        borderColor={{ base: "gray.200", _dark: "gray.500" }}
-                        placeholder="Ex: US.1 - Registrar notas dos alunos"
-                        {...field}
-                        onBlur={async () => {
-                          field.onBlur();
-                          await handleBlurField("title");
-                        }}
-                      />
+                      <HStack align="center" gap="2">
+                        <Input
+                          w={{ base: "300px", md: "600px" }}
+                          borderColor={{ base: "gray.200", _dark: "gray.500" }}
+                          placeholder="Ex: US.1 - Registrar notas dos alunos"
+                          {...field}
+                          onBlur={async () => {
+                            field.onBlur();
+                            await handleBlurField("title");
+                          }}
+                        />
+                        <EmojiPickerDialog
+                          key="refine-story-title-emoji-picker"
+                          onSelectEmoji={(emoji) => {
+                            field.onChange((field.value || "") + emoji);
+                          }}
+                        />
+                      </HStack>
                     )}
                   />
                   <Field.ErrorText>{errors.title?.message}</Field.ErrorText>
@@ -310,6 +319,7 @@ export default function RefineStory({
                     >
                       <HStack gap="2" align="center">
                         <EmojiPickerDialog
+                          key="refine-story-comment-emoji-picker"
                           onSelectEmoji={(emoji) => {
                             setNewComment((prev) =>
                               (prev + emoji).slice(0, MAX_COMMENT_LENGTH)
