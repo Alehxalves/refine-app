@@ -43,6 +43,7 @@ export function sortStoriesForGroup(
     (group?.order_by_stories as
       | "CUSTOM"
       | "PRIORITY"
+      | "STORY_POINTS"
       | "CREATED_AT"
       | "UPDATED_AT") ?? "CUSTOM";
 
@@ -58,6 +59,18 @@ export function sortStoriesForGroup(
 
       const cmpScore = pb - pa;
       if (cmpScore !== 0) return dir * cmpScore;
+
+      const cmpSortOrder = (a.sort_order ?? 0) - (b.sort_order ?? 0);
+      return dir * cmpSortOrder;
+    });
+  }
+
+  if (order === "STORY_POINTS") {
+    return arr.sort((a, b) => {
+      const spa = a.story_points ?? 0;
+      const spb = b.story_points ?? 0;
+      const cmpStoryPoints = spb - spa;
+      if (cmpStoryPoints !== 0) return dir * cmpStoryPoints;
 
       const cmpSortOrder = (a.sort_order ?? 0) - (b.sort_order ?? 0);
       return dir * cmpSortOrder;

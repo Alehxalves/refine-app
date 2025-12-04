@@ -7,6 +7,7 @@ export type CHECK_LIST_TYPE = "DOR" | "INVEST" | "CUSTOM";
 export type ORDER_BY_STORIES =
   | "CUSTOM"
   | "PRIORITY"
+  | "STORY_POINTS"
   | "CREATED_AT"
   | "UPDATED_AT";
 

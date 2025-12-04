@@ -28,6 +28,7 @@ export interface Story {
   description: string;
   default_priority?: "LOW" | "MEDIUM" | "HIGH";
   sort_order: number;
+  story_points?: number;
   archived?: boolean;
   story_group_id?: string | null;
   created_at: string;

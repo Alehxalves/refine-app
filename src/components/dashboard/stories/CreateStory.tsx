@@ -1,4 +1,3 @@
-// src/components/dashboard/stories/CreateStory.tsx
 "use client";
 
 import {
@@ -7,6 +6,7 @@ import {
   Dialog,
   Field,
   Input,
+  NumberInput,
   Portal,
   Stack,
   Textarea,
@@ -22,6 +22,9 @@ import { goodStoryTip } from "./tips/story-tips";
 const StorySchema = z.object({
   title: z.string().min(1, "O título é obrigatório"),
   description: z.string().min(1, "A descrição é obrigatória"),
+  story_points: z
+    .number()
+    .min(0, "Os pontos da história devem ser um número não negativo"),
 });
 
 type StoryValues = z.infer<typeof StorySchema>;
@@ -55,6 +58,7 @@ export default function CreateStory({
     defaultValues: {
       title: "",
       description: "",
+      story_points: 0,
     },
   });
 
@@ -65,6 +69,7 @@ export default function CreateStory({
         title: data.title,
         description: data.description,
         story_group_id: storyGroupId,
+        story_points: data.story_points,
       });
       shouldRefetch?.(true);
       reset();
@@ -79,10 +84,12 @@ export default function CreateStory({
       key="create-story-dialog"
       size={{ base: "sm", md: "lg", lg: "xl" }}
       open={isOpen === true}
-      onOpenChange={() => {
-        clearErrors();
-        reset();
-        onClose();
+      onOpenChange={(details) => {
+        if (!details.open) {
+          clearErrors();
+          reset();
+          onClose();
+        }
       }}
     >
       <Portal>
@@ -132,7 +139,30 @@ export default function CreateStory({
                       {errors.description?.message}
                     </Field.ErrorText>
                   </Field.Root>
+                  <Field.Root invalid={!!errors.story_points} width="100%">
+                    <Field.Label>Pontos da História</Field.Label>
+                    <Controller
+                      control={control}
+                      name="story_points"
+                      render={({ field }) => (
+                        <NumberInput.Root
+                          min={0}
+                          value={field.value?.toString() ?? "0"}
+                          onValueChange={({ value }) => {
+                            const numeric = Number(value);
+                            field.onChange(Number.isNaN(numeric) ? 0 : numeric);
+                          }}
+                        >
+                          <NumberInput.Control />
+                          <NumberInput.Input />
+                        </NumberInput.Root>
+                      )}
+                    />
 
+                    <Field.ErrorText>
+                      {errors.story_points?.message}
+                    </Field.ErrorText>
+                  </Field.Root>
                   {goodStoryTip()}
                 </Stack>
               </Dialog.Body>

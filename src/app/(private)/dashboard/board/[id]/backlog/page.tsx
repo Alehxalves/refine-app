@@ -73,6 +73,7 @@ function StoryList({
   const [isFlagging, setIsFlagging] = useState(false);
 
   const prioritization = story.prioritization_technique;
+  const storyPoints = story.story_points || 0;
 
   const moscowLevel =
     moscowLevelsPtBr[prioritization?.moscow as keyof typeof moscowLevelsPtBr];
@@ -216,18 +217,35 @@ function StoryList({
               </Card.Title>
               <Card.Description
                 fontSize={{ base: "xs", sm: "sm" }}
-                color={{ base: "gray.600", _dark: "gray.300" }}
+                color={{ base: "gray.900", _dark: "gray.50" }}
               >
                 {story.description}
               </Card.Description>
             </VStack>
             <StorySettings storyId={story.id} shouldRefetch={shouldRefetch} />
           </HStack>
+
           <HStack>
+            {storyPoints > 0 && (
+              <>
+                <Text
+                  lineClamp={1}
+                  fontSize="xs"
+                  color={{ base: "gray.500", _dark: "gray.400" }}
+                  fontWeight="thin"
+                >
+                  {storyPoints} {storyPoints === 1 ? "ponto" : "pontos"}
+                </Text>
+                <Separator
+                  display={{ base: "none", md: "block" }}
+                  orientation="vertical"
+                  h="10px"
+                />
+              </>
+            )}
             {createdAtLabel && (
               <Text
                 lineClamp={1}
-                title={`Criada em ${createdAtLabel}`}
                 fontSize="xs"
                 color={{ base: "gray.500", _dark: "gray.400" }}
                 display={{ base: "none", md: "block" }}

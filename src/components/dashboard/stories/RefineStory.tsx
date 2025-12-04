@@ -20,6 +20,7 @@ import {
   Textarea,
   HStack,
   IconButton,
+  NumberInput,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useState } from "react";
@@ -35,6 +36,9 @@ import { EmojiPickerDialog } from "@/components/utils/EmojiPickerDialog";
 const StorySchema = z.object({
   title: z.string().min(1, "O título é obrigatório"),
   description: z.string().min(1, "A descrição é obrigatória"),
+  story_points: z
+    .number()
+    .min(0, "Os pontos da história devem ser um número não negativo"),
 });
 
 type StoryValues = z.infer<typeof StorySchema>;
@@ -79,6 +83,7 @@ export default function RefineStory({
     defaultValues: {
       title: "",
       description: "",
+      story_points: 0,
     },
   });
 
@@ -87,6 +92,7 @@ export default function RefineStory({
       reset({
         title: story.title ?? "",
         description: story.description ?? "",
+        story_points: story.story_points ?? 0,
       });
     }
   }, [story, isOpen, reset]);
@@ -201,6 +207,34 @@ export default function RefineStory({
                   />
                   <Field.ErrorText>
                     {errors.description?.message}
+                  </Field.ErrorText>
+                </Field.Root>
+                <Field.Root invalid={!!errors.story_points} width="100%">
+                  <Field.Label>Pontos da História</Field.Label>
+                  <Controller
+                    control={control}
+                    name="story_points"
+                    render={({ field }) => (
+                      <NumberInput.Root
+                        min={0}
+                        value={field.value?.toString() ?? "0"}
+                        onValueChange={({ value }) => {
+                          const numeric = Number(value);
+                          field.onChange(Number.isNaN(numeric) ? 0 : numeric);
+                        }}
+                        onBlur={async () => {
+                          field.onBlur();
+                          await handleBlurField("story_points");
+                        }}
+                      >
+                        <NumberInput.Control />
+                        <NumberInput.Input />
+                      </NumberInput.Root>
+                    )}
+                  />
+
+                  <Field.ErrorText>
+                    {errors.story_points?.message}
                   </Field.ErrorText>
                 </Field.Root>
                 {goodStoryTip()}

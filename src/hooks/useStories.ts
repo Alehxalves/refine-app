@@ -35,6 +35,7 @@ function useStoriesBase(boardId: string, { archived }: { archived: boolean }) {
       title: string;
       description: string;
       story_group_id?: string | null;
+      story_points?: number;
     }) => storyService.createStory(supabase!, storyData as Story),
 
     onSuccess: () => {
