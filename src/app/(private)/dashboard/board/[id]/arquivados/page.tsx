@@ -44,6 +44,7 @@ function StoryList({ story, isMobile, shouldRefetch }: StoryProps) {
   const [isRefined, setIsRefined] = useState(false);
 
   const prioritization = story.prioritization_technique;
+  const storyPoints = story.story_points || 0;
 
   const moscowLevel =
     moscowLevelsPtBr[prioritization?.moscow as keyof typeof moscowLevelsPtBr];
@@ -169,21 +170,36 @@ function StoryList({ story, isMobile, shouldRefetch }: StoryProps) {
                 {story.description}
               </Card.Description>
             </VStack>
-
-            <HStack>
-              {createdAtLabel && (
+            <StorySettings storyId={story.id} shouldRefetch={shouldRefetch} />
+          </HStack>
+          <HStack>
+            {storyPoints > 0 && (
+              <>
                 <Text
-                  title={`Criada em ${createdAtLabel}`}
                   lineClamp={1}
                   fontSize="xs"
                   color={{ base: "gray.500", _dark: "gray.400" }}
-                  display={{ base: "none", md: "block" }}
+                  fontWeight="thin"
                 >
-                  Criada em {createdAtLabel}
+                  {storyPoints} {storyPoints === 1 ? "ponto" : "pontos"}
                 </Text>
-              )}
-              <StorySettings storyId={story.id} shouldRefetch={shouldRefetch} />
-            </HStack>
+                <Separator
+                  display={{ base: "none", md: "block" }}
+                  orientation="vertical"
+                  h="10px"
+                />
+              </>
+            )}
+            {createdAtLabel && (
+              <Text
+                lineClamp={1}
+                fontSize="xs"
+                color={{ base: "gray.500", _dark: "gray.400" }}
+                display={{ base: "none", md: "block" }}
+              >
+                Criada em {createdAtLabel}
+              </Text>
+            )}
           </HStack>
         </Card.Body>
 
