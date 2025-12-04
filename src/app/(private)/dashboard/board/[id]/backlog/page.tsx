@@ -221,20 +221,20 @@ function StoryList({
                 {story.description}
               </Card.Description>
             </VStack>
-            <HStack>
-              {createdAtLabel && (
-                <Text
-                  title={`Criada em ${createdAtLabel}`}
-                  lineClamp={1}
-                  fontSize="xs"
-                  color={{ base: "gray.500", _dark: "gray.400" }}
-                  display={{ base: "none", md: "block" }}
-                >
-                  Criada em {createdAtLabel}
-                </Text>
-              )}
-              <StorySettings storyId={story.id} shouldRefetch={shouldRefetch} />
-            </HStack>
+            <StorySettings storyId={story.id} shouldRefetch={shouldRefetch} />
+          </HStack>
+          <HStack>
+            {createdAtLabel && (
+              <Text
+                lineClamp={1}
+                title={`Criada em ${createdAtLabel}`}
+                fontSize="xs"
+                color={{ base: "gray.500", _dark: "gray.400" }}
+                display={{ base: "none", md: "block" }}
+              >
+                Criada em {createdAtLabel}
+              </Text>
+            )}
           </HStack>
         </Card.Body>
 
@@ -597,7 +597,9 @@ export default function BacklogPage() {
                 borderColor={{ base: "gray.100", _dark: "gray.800" }}
               >
                 <Card.Body textAlign="center" py="10" gap="3">
-                  <Text fontWeight="medium">Nenhuma história cadastrada.</Text>
+                  <Text fontWeight="medium">
+                    Nenhuma história ou grupo cadastrado.
+                  </Text>
                   <Text fontSize="sm" color="gray.500">
                     Comece criando um grupo para organizar seu backlog ou
                     adicione a primeira história.
