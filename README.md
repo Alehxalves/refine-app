@@ -5,7 +5,7 @@
 <h1 align="center">Refyne</h1>
 
 <p align="center">
-  <a href="https://refyne.app" target="_blank"><b>🌐 Acessar o Refyne</b></a>
+  <a href="https://refyne.com.br" target="_blank"><b>🌐 Acessar o Refyne</b></a>
 </p>
 
 ---
@@ -20,7 +20,7 @@ O **Refyne** é uma plataforma criada para ajudar equipes ágeis a escrever e me
 Este software faz parte do TCC:
 
 > **“Desenvolvimento de uma ferramenta para apoio no refinamento de histórias de usuário junto ao time ágil”**,  
-> por **Alex Alves de Sousa** orientado pela professora **Leonara de Medeiros Braz***, graduando em Sistemas de Informação na Universidade Federal do Ceará – Campus Quixadá.
+> por **Alex Alves de Sousa** orientado pela professora **Leonara de Medeiros Braz**, graduando em Sistemas de Informação na Universidade Federal do Ceará – Campus Quixadá.
 
 ---
 ## 👤 Autor
